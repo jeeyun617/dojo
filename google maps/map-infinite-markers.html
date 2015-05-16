@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Simple Map</title>
+    <title>Infinite Markers Map</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style>
         html, body, #map-canvas {
@@ -16,12 +16,42 @@
 
     <script>
         var map;
+        var only_one_marker = null;
+
         function initialize(){
             var mapOptions = {
                 zoom:8,
                 center:new google.maps.LatLng(-34.397, 150.333)
             };
             map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+            google.maps.event.addListener(map, 'click', function(e) {
+                var marker = new google.maps.Marker({
+                    position: e.latLng,
+                    map: map
+                });
+                google.maps.event.addListener(marker, 'click', function(e) {
+                    map.setCenter(e.latLng);
+                    map.setZoom(15);
+                });
+                google.maps.event.addListener(marker, 'rightclick', function(e) {
+                    marker.setMap(null);
+                    makrer = null;
+                });
+
+                /*
+                if ( only_one_marker == null ) {
+                    only_one_marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map
+                    })
+                }
+                else
+                    only_one_marker.setPosition(e.latLng);
+                */
+
+                console.log(e);
+            });
         }
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>
