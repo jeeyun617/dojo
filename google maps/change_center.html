@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>simple click event</title>
+    <title>change center event</title>
     <meta name="viewprot" content="initial-scale=1.0, user-scalable=no" />
     <style>
         html, body, #map-canvas{
@@ -27,12 +27,17 @@
             google.maps.event.addListener(map, 'center_changed', function(){
                 window.setTimeout(function(){
                     map.panTo(marker.getPosition());
-                }, 1000);
+                }, 2000);
             } );
 
-            google.maps.event.addListener(marker, 'click', function(){
-                map.setZoom(8);
-                map.setCenter(marker.getPosition());
+
+            google.maps.event.addListener(map, 'click', function(e){
+                console.log('new marker');
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: e.latLng
+                });
+
             })
         }
 
